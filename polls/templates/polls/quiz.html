@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+  <h2>{{ quiz.question }}</h2>
+  {% if quiz.image %}
+    <img src="{{ quiz.image.url }}" alt="Quiz Image">
+  {% endif %}
+  <form method="post" action="{% url 'polls:check_answer' quiz.id %}">
+    {% csrf_token %}
+    {% if quiz.is_text_answer %}
+      <label>답:</label>
+      <input type="text" name="answer_text" required>
+    {% else %}
+      {% for answer in answers %}
+        <input type="radio" id="answer_{{ answer.id }}" name="answer" value="{{ answer.id }}">
+        <label for="answer_{{ answer.id }}">{{ answer.text }}
+        {% if answer.image %}
+          <img src="{{ answer.image.url }}" alt="Answer Image">
+        {% endif %}
+        </label>
+        <br>
+      {% endfor %}
+    {% endif %}
+    <input type="submit" value="제출">
+  </form>
+  <li><a href="{% url 'polls:completed' %}">총 점수 보기</a>
+      <a href="{% url 'polls:index' %}">문제 리스트 보기</a>
+      <a href="/">홈으로 돌아가기</a></li>
+{% endblock %}
+</body>
+</html>

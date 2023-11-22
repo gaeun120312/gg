@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz completed</title>
+</head>
+<body>
+    {% block content %}
+        <h2>퀴즈 완료!</h2>
+        <p>총 점수: {{ total_score }}점</p>
+        {% if next_quiz %}
+            <a href="{% url 'polls:next_quiz' %}">Next Quiz</a>
+        {% endif %}
+        <br>
+            <a href="/">홈으로 돌아가기</a>
+        <br>
+            <a href="{% url 'polls:index' %}">문제 리스트 보기</a>
+        <ul>
+            {% for user_answer in user_answers %}
+                <li>{{ user_answer.quiz.question }} - {{ user_answer.score }}점</li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+</body>
+</html>
